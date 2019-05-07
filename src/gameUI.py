@@ -14,7 +14,7 @@ SQUARE_WIDTH = int(BOARD_WIDTH/BOARD_COLS)
 SQUARE_HEIGHT = int(BOARD_HEIGHT/BOARD_ROWS)
 
 def displayGame(mainWindow, backgroundPicture):
-    boardPicture = pygame.image.load("ressources/Connect4Board.png").convert_alpha()
+    boardPicture = pygame.image.load("../ressources/Connect4Board.png").convert_alpha()
     mainWindow.blit(backgroundPicture, (0,0))
     mainWindow.blit(boardPicture, (WIDTH_GAP, HEIGHT_GAP))
 

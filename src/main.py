@@ -8,7 +8,7 @@ WIN_WIDTH = 800
 WIN_HEIGHT = 600
 DEFAULT_COLOR = (224, 180, 20)
 HOVER_COLOR = (247, 224, 140)
-FONT = 'ressources/Birdy Game.ttf'
+FONT = '../ressources/Birdy Game.ttf'
 
 #Init window
 pygame.init()
@@ -17,9 +17,9 @@ mainWindow = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 exitWindow = False
 oldTicks = 0
 delayInterval = 50
-backgroundPicture = pygame.image.load("ressources/background.png").convert()
-redCoin = pygame.image.load("ressources/redcoin.png").convert_alpha()
-blueCoin = pygame.image.load("ressources/bluecoin.png").convert_alpha()
+backgroundPicture = pygame.image.load("../ressources/background.png").convert()
+redCoin = pygame.image.load("../ressources/redcoin.png").convert_alpha()
+blueCoin = pygame.image.load("../ressources/bluecoin.png").convert_alpha()
 board = Board(mainWindow, backgroundPicture, DEFAULT_COLOR, FONT, redCoin, blueCoin)
 pvpButton = Font(mainWindow, WIN_WIDTH/2, 50+WIN_HEIGHT/2, "Player vs Player", DEFAULT_COLOR, FONT, 45)
 pveButton = Font(mainWindow, WIN_WIDTH/2, 150+WIN_HEIGHT/2, "Player vs AI", DEFAULT_COLOR, FONT, 45)
