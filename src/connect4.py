@@ -18,7 +18,7 @@ class Board():
         return False
 
     def add_token2(self, col):
-        if self.turn%2 == 1:
+        if self.turn % 2 == 1:
             player = 1
         else:
             player = 2

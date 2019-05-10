@@ -36,7 +36,9 @@ while not exitWindow:
             gameUI.clickEventManagement(mousePos)
 
     if board.turn % 2 == AI and board.AIgame is True and not board.gameover:
+        pygame.display.flip()
         col = random.randint(0, board.COLS-1)
+        pygame.time.wait(500)
         gameUI.displayCoin2(col)
         if board.check_win2():
             board.gameOver()
