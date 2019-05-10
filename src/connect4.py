@@ -3,16 +3,10 @@ import sys
 from gameUI import *
 
 class Board():
-    def __init__ (self, mainWindow, backgroundPicture, color, font, redcoin, bluecoin):
-        self.mainWindow = mainWindow
-        self.backgroundPicture = backgroundPicture
-        self.color = color
-        self.font = font
-        self.redcoin = redcoin
-        self.bluecoin = bluecoin
-        self.board = np.zeros((6, 7))
+    def __init__ (self):
         self.ROWS = 6
         self.COLS = 7
+        self.board = np.zeros((self.ROWS, self.COLS))
         self.turn = 1
         self.gamelaunched = False
         self.gameover = False
@@ -22,9 +16,9 @@ class Board():
             return True
         return False
 
-    def add_token(self, mousePos):
+    def add_token(self, mousePos, WIDTH_GAP, SQUARE_WIDTH):
         posx = mousePos[0]
-        col = math.floor((posx-getWidthGap())/getSquareWidth())
+        col = math.floor((posx-WIDTH_GAP)/SQUARE_WIDTH)
         if self.turn%2 == 1:
             player = 1
         else:
@@ -34,12 +28,9 @@ class Board():
                 break
         if self.isValid(row, col):
             self.board[row, col] = player      
-            if player == 1:
-                displayCoin(self.mainWindow, self.redcoin, col, row)
-                self.turn = self.turn + 1
-            else:
-                displayCoin(self.mainWindow, self.bluecoin, col, row)
-                self.turn = self.turn + 1
+            self.turn = self.turn + 1
+        return(row, col, player)
+        
 
     def check_win(self):
         # check horizontal line
@@ -74,15 +65,12 @@ class Board():
 
     def gameOver(self):
         self.gameover = True
-        displayWinner(self.mainWindow, self.backgroundPicture, int(self.check_win()), self.color, self.font)
 
     def startGame(self):
         self.board = np.zeros((6, 7))
         self.turn = 1
         self.gamelaunched = True
-        displayGame(self.mainWindow, self.backgroundPicture)
     
     def playAgain(self):
         self.gamelaunched = False
         self.gameover = False
-        displayMenu(self.mainWindow, self.backgroundPicture, self.color, self.font)
