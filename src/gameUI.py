@@ -2,6 +2,7 @@ import pygame
 import math
 from font import *
 
+
 class GameUI():
     def __init__ (self, mainWindow, H, W, board):
         self.mainWindow = mainWindow
@@ -31,9 +32,16 @@ class GameUI():
         self.mainWindow.blit(self.backgroundPicture, (0,0))
         self.mainWindow.blit(boardPicture, (self.WIDTH_GAP, self.HEIGHT_GAP))
 
+    def displayCoin2(self, col):
+        (row, col, player) = self.board.add_token2(col)
+        if player == 1:
+            self.mainWindow.blit(self.redcoin, (self.WIDTH_GAP+col*self.SQUARE_WIDTH+(self.SQUARE_WIDTH-72)/2, self.WIN_HEIGHT-(row+1)*self.SQUARE_HEIGHT+(self.SQUARE_HEIGHT-72)/2))
+        else:
+            self.mainWindow.blit(self.bluecoin, (self.WIDTH_GAP+col*self.SQUARE_WIDTH+(self.SQUARE_WIDTH-72)/2, self.WIN_HEIGHT-(row+1)*self.SQUARE_HEIGHT+(self.SQUARE_HEIGHT-72)/2))
+
     def displayCoin(self, mousePos):
         (row, col, player) = self.board.add_token(mousePos, self.WIDTH_GAP, self.SQUARE_WIDTH)
-        if (player == 1):
+        if player == 1:
             self.mainWindow.blit(self.redcoin, (self.WIDTH_GAP+col*self.SQUARE_WIDTH+(self.SQUARE_WIDTH-72)/2, self.WIN_HEIGHT-(row+1)*self.SQUARE_HEIGHT+(self.SQUARE_HEIGHT-72)/2))
         else:
             self.mainWindow.blit(self.bluecoin, (self.WIDTH_GAP+col*self.SQUARE_WIDTH+(self.SQUARE_WIDTH-72)/2, self.WIN_HEIGHT-(row+1)*self.SQUARE_HEIGHT+(self.SQUARE_HEIGHT-72)/2))
@@ -66,13 +74,16 @@ class GameUI():
         if not self.board.gamelaunched and self.pvpButton.isOver(mousePos):
             self.board.startGame()
             self.displayGame()
+            self.board.AIgame = False
 
         elif not self.board.gamelaunched and self.pveButton.isOver(mousePos):
             self.board.startGame()
             self.displayGame()
+            self.board.AIgame = True
 
         elif self.board.gamelaunched:
             self.displayCoin(mousePos)
             if self.board.check_win2():
                 self.board.gameOver()
                 self.displayWinner(int(self.board.check_win()))
+
