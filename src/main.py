@@ -6,9 +6,6 @@ from connect4 import *
 #Constants
 WIN_WIDTH = 800
 WIN_HEIGHT = 600
-DEFAULT_COLOR = (224, 180, 20)
-HOVER_COLOR = (247, 224, 140)
-FONT = '../ressources/Birdy Game.ttf'
 
 HUMAN = 1
 AI = 0
