@@ -26,7 +26,11 @@ class GameUI():
         self.SQUARE_HEIGHT = int(self.BOARD_HEIGHT/self.BOARD_ROWS)
         self.pvpButton = Font(mainWindow, self.WIN_WIDTH/2, 50+self.WIN_HEIGHT/2, "Player vs Player", self.DEFAULT_COLOR, self.font, 45)
         self.pveButton = Font(mainWindow, self.WIN_WIDTH/2, 150+self.WIN_HEIGHT/2, "Player vs AI", self.DEFAULT_COLOR, self.font, 45)
-        self.backbutton = Font(self.mainWindow, self.WIN_WIDTH/2, self.WIN_HEIGHT/2 +100, "Back to Menu", self.DEFAULT_COLOR, self.font, 40)
+        self.backButton = Font(self.mainWindow, self.WIN_WIDTH/2, self.WIN_HEIGHT/2 +100, "Back to Menu", self.DEFAULT_COLOR, self.font, 40)
+        self.mediumButton = Font(self.mainWindow, self.WIN_WIDTH/2, self.WIN_HEIGHT/2, "Pussy mode", self.DEFAULT_COLOR, self.font, 40)
+        self.difficultButton = Font(self.mainWindow, self.WIN_WIDTH/2, self.WIN_HEIGHT/2 +60, "Ok mode", self.DEFAULT_COLOR, self.font, 40)
+        self.impossibleButton = Font(self.mainWindow, self.WIN_WIDTH/2, self.WIN_HEIGHT/2 +150, "YOU GOT GUTS MODE", self.DEFAULT_COLOR, self.font, 60)
+
 
     def displayGame(self):
         boardPicture = pygame.image.load("../ressources/Connect4Board.png").convert_alpha()
@@ -51,7 +55,7 @@ class GameUI():
         self.mainWindow.blit(self.backgroundPicture, (0,0))
         winner = Font(self.mainWindow, self.WIN_WIDTH/2, self.WIN_HEIGHT/2-150, "Player " + str(player) + " won the game !", self.DEFAULT_COLOR, self.font, 60)
         winner.draw()
-        self.backbutton.draw()
+        self.backButton.draw()
 
     def displayMenu(self):
         self.mainWindow.blit(self.backgroundPicture, (0,0))
@@ -59,18 +63,32 @@ class GameUI():
         title.draw()
         self.pvpButton.draw()
         self.pveButton.draw()
+    
+    def displayDifficulty(self):
+        self.mainWindow.blit(self.backgroundPicture, (0,0))
+        title = Font(self.mainWindow, self.WIN_WIDTH/2, self.WIN_HEIGHT/2-150, "Era-Connect4", self.DEFAULT_COLOR, self.font, 80)
+        title.draw()
+        self.mediumButton.draw()
+        self.difficultButton.draw()
+        self.impossibleButton.draw()
+
+    
 
     def hoverMenu(self, mousePos):
-        if not self.board.gamelaunched and not self.network.error and not self.network.waitplayer:
+        if not self.board.gamelaunched and not self.network.error and not self.network.waitplayer and not self.board.AIgame:
             self.pvpButton.hover(mousePos, self.HOVER_COLOR)
             self.pveButton.hover(mousePos, self.HOVER_COLOR)
         elif self.board.gameover:
-            self.backbutton.hover(mousePos, self.HOVER_COLOR)
+            self.backButton.hover(mousePos, self.HOVER_COLOR)
         elif self.network.error:
-            self.backbutton.hover(mousePos, self.HOVER_COLOR)
+            self.backButton.hover(mousePos, self.HOVER_COLOR)
+        elif self.board.AIgame and not self.board.gamelaunched:
+            self.mediumButton.hover(mousePos, self.HOVER_COLOR)
+            self.difficultButton.hover(mousePos, self.HOVER_COLOR)
+            self.impossibleButton.hover(mousePos, self.HOVER_COLOR)
     
     def clickEventManagement(self, mousePos):
-        if self.board.gameover and self.backbutton.isOver(mousePos):
+        if self.board.gameover and self.backButton.isOver(mousePos):
             self.board.playAgain()
             self.displayMenu()
 
@@ -81,11 +99,19 @@ class GameUI():
                 self.network.listen()
     
         elif not self.board.gamelaunched and self.pveButton.isOver(mousePos) and not self.network.error and not self.network.waitplayer:
+            self.board.AIgame = True
+            self.displayDifficulty()
+
+        elif not self.board.gamelaunched and self.board.AIgame and self.mediumButton.isOver(mousePos):
             self.board.startGame()
             self.displayGame()
-            self.board.AIgame = True
-
-        elif not self.board.gamelaunched and self.network.error and self.backbutton.isOver(mousePos):
+        elif not self.board.gamelaunched and self.board.AIgame and self.difficultButton.isOver(mousePos):
+            self.board.startGame()
+            self.displayGame()
+        elif not self.board.gamelaunched and self.board.AIgame and self.impossibleButton.isOver(mousePos):
+            self.board.startGame()
+            self.displayGame()
+        elif not self.board.gamelaunched and self.network.error and self.backButton.isOver(mousePos):
             self.network.error = False
             self.displayMenu()
 
@@ -105,7 +131,7 @@ class GameUI():
         errormsg = Font(self.mainWindow, self.WIN_WIDTH/2, self.WIN_HEIGHT/2-150, msg, self.DEFAULT_COLOR, self.font, 50)
         self.mainWindow.blit(self.backgroundPicture, (0,0))
         errormsg.draw()
-        self.backbutton.draw()
+        self.backButton.draw()
 
     def displayWaitPlayer(self):
         self.mainWindow.blit(self.backgroundPicture, (0,0))
