@@ -10,7 +10,7 @@ def ai_move(board, gameUI):
     pygame.display.flip()
 #    col = random.randint(0, board.COLS - 1)
 #    col = choose_move(board, 2)
-    col, minimax_score = minimax(board, 4, -math.inf, math.inf, True)
+    col, minimax_score = minimax(board, 5, -math.inf, math.inf, True)
     pygame.time.wait(500)
     gameUI.displayCoin2(col)
     if board.check_win2():
