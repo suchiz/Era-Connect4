@@ -4,10 +4,9 @@ from font import *
 
 
 class GameUI():
-    def __init__ (self, mainWindow, H, W, board, network):
+    def __init__ (self, mainWindow, H, W, board):
         self.mainWindow = mainWindow
         self.board = board
-        self.network = network
         self.backgroundPicture = pygame.image.load("../ressources/background.png").convert()
         self.DEFAULT_COLOR = (224, 180, 20)
         self.HOVER_COLOR = (247, 224, 140)
@@ -37,22 +36,15 @@ class GameUI():
         (row, col, player) = self.board.add_token2(col)
         if player == 1:
             self.mainWindow.blit(self.redcoin, (self.WIDTH_GAP+col*self.SQUARE_WIDTH+(self.SQUARE_WIDTH-72)/2, self.WIN_HEIGHT-(row+1)*self.SQUARE_HEIGHT+(self.SQUARE_HEIGHT-72)/2))
-        else:
+        elif player == 2:
             self.mainWindow.blit(self.bluecoin, (self.WIDTH_GAP+col*self.SQUARE_WIDTH+(self.SQUARE_WIDTH-72)/2, self.WIN_HEIGHT-(row+1)*self.SQUARE_HEIGHT+(self.SQUARE_HEIGHT-72)/2))
 
     def displayCoin(self, mousePos):
         (row, col, player) = self.board.add_token(mousePos, self.WIDTH_GAP, self.SQUARE_WIDTH)
-        message = "playcoin-" + str(row) + "-" + str(col) + "-" + str(player)
-        self.network.send(message)
-
-    def displayCoin2(self, row, col, player):
-        self.board.add_token2(row, col, player)
-        if (int(player) == 1):
-            self.mainWindow.blit(self.redcoin, (self.WIDTH_GAP+int(col)*self.SQUARE_WIDTH+(self.SQUARE_WIDTH-72)/2, self.WIN_HEIGHT-(int(row)+1)*self.SQUARE_HEIGHT+(self.SQUARE_HEIGHT-72)/2))
-        else:
-            self.mainWindow.blit(self.bluecoin, (self.WIDTH_GAP+int(col)*self.SQUARE_WIDTH+(self.SQUARE_WIDTH-72)/2, self.WIN_HEIGHT-(int(row)+1)*self.SQUARE_HEIGHT+(self.SQUARE_HEIGHT-72)/2))
-        
-
+        if player == 1:
+            self.mainWindow.blit(self.redcoin, (self.WIDTH_GAP+col*self.SQUARE_WIDTH+(self.SQUARE_WIDTH-72)/2, self.WIN_HEIGHT-(row+1)*self.SQUARE_HEIGHT+(self.SQUARE_HEIGHT-72)/2))
+        elif player == 2:
+            self.mainWindow.blit(self.bluecoin, (self.WIDTH_GAP+col*self.SQUARE_WIDTH+(self.SQUARE_WIDTH-72)/2, self.WIN_HEIGHT-(row+1)*self.SQUARE_HEIGHT+(self.SQUARE_HEIGHT-72)/2))
 
     def displayWinner(self, player):
         self.mainWindow.blit(self.backgroundPicture, (0,0))

@@ -13,10 +13,15 @@ class Board():
         self.gameover = False
         self.AIgame = False
 
-    def isValid(self, r, c):
-        if (r >= 0 and r < self.ROWS and c >= 0 and c < self.COLS and self.board[r, c] == 0):
-            return True
-        return False
+    def isValid(self, c):
+        return self.board[self.ROWS-1][c] == 0
+
+    def getValidMoves(self):
+        validMoves = []
+        for col in range(self.COLS):
+            if self.isValid(col):
+                validMoves.append(col)
+        return validMoves
 
     def add_token2(self, col):
         if self.turn % 2 == 1:
@@ -26,9 +31,11 @@ class Board():
         for row in range(self.ROWS):
             if self.board[row, col] == 0:
                 break
-        if self.isValid(row, col):
+        if self.isValid(col):
             self.board[row, col] = player
             self.turn = self.turn + 1
+        else:
+            player = 0
         return (row, col, player)
 
     def add_token(self, mousePos, WIDTH_GAP, SQUARE_WIDTH):

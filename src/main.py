@@ -1,6 +1,7 @@
 import pygame
 import random
 from gameUI import *
+from aiPlayer import *
 from connect4 import *
 from network import *
 
@@ -44,13 +45,7 @@ while not exitWindow:
                 gameUI.clickEventManagement(mousePos)
 
     if board.turn % 2 == AI and board.AIgame is True and not board.gameover:
-        pygame.display.flip()
-        col = random.randint(0, board.COLS-1)
-        pygame.time.wait(500)
-        gameUI.displayCoin2(col)
-        if board.check_win2():
-            board.gameOver()
-            gameUI.displayWinner(int(board.check_win()))
+        ai_move(board, gameUI)
                     
     if currentTicks - oldTicks < delayInterval:
         pygame.time.delay(delayInterval - (currentTicks-oldTicks))
