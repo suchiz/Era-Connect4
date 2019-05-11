@@ -26,14 +26,16 @@ gameUI.displayMenu()
 
 while not exitWindow:
     currentTicks = pygame.time.get_ticks()
-    for event in pygame.event.get():
-        mousePos = pygame.mouse.get_pos()
-        if event.type == pygame.QUIT:
-            exitWindow = True
-        if event.type == pygame.MOUSEMOTION:
-            gameUI.hoverMenu(mousePos)
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            gameUI.clickEventManagement(mousePos)
+
+    if board.turn % 2 == HUMAN or not board.AIgame:
+        for event in pygame.event.get():
+            mousePos = pygame.mouse.get_pos()
+            if event.type == pygame.QUIT:
+                exitWindow = True
+            if event.type == pygame.MOUSEMOTION:
+                gameUI.hoverMenu(mousePos)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                gameUI.clickEventManagement(mousePos)
 
     if board.turn % 2 == AI and board.AIgame is True and not board.gameover:
         pygame.display.flip()

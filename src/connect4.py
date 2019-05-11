@@ -1,6 +1,7 @@
 import numpy as np
 import math
 from gameUI import *
+import random
 
 class Board():
     def __init__ (self):
@@ -72,7 +73,7 @@ class Board():
 
     def startGame(self):
         self.board = np.zeros((6, 7))
-        self.turn = 1
+        self.turn = random.randint(0, 1)
         self.gamelaunched = True
     
     def playAgain(self):
