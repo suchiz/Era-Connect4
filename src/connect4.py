@@ -11,6 +11,7 @@ class Board():
         self.turn = 1
         self.gamelaunched = False
         self.gameover = False
+        self.player = None
         self.AIgame = False
 
     def isValid(self, c):
@@ -84,9 +85,37 @@ class Board():
 
     def startGame(self):
         self.board = np.zeros((6, 7))
-        self.turn = random.randint(0, 1)
+        if self.board.AIgame:
+            self.turn = random.randint(0, 1)
+        else: 
+            self.turn = 0
         self.gamelaunched = True
     
     def playAgain(self):
         self.gamelaunched = False
         self.gameover = False
+
+
+
+    ##### NETWORKING
+    def computeCoinDatas(self, mousePos, WIDTH_GAP, SQUARE_WIDTH):
+        posx = mousePos[0]
+        col = math.floor((posx-WIDTH_GAP)/SQUARE_WIDTH)
+        if self.turn % 2 == 1:
+            player = 1
+        else:
+            player = 2
+        for row in range(self.ROWS):
+            if self.board[row, col] == 0:
+                break
+        return (row, col, player)
+
+    def isValid2(self, r, c):
+        if (r >= 0 and r < self.ROWS and c >= 0 and c < self.COLS and self.board[r, c] == 0):
+            return True
+        return False
+
+    def add_token_FromNetWork(self, row, col, player):
+        if self.isValid2(row, col):
+            self.board[row, col] = player
+            self.turn = self.turn + 1

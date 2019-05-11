@@ -11,11 +11,21 @@ def handler(conn, adr):
         if not data: 
             print(str(adr[0]) + ":" + str(adr[1]) + " has disconnected" )
             connection_list.remove(conn)
-            conn.close()
+            print (len(connection_list))
             break
-        print("Received in server: ", data.decode())
-        for mconn in connection_list:
-            mconn.sendall(data)
+        if len(connection_list) < 2:
+            message = "Disconnected-"
+            conn.sendall(message.encode())
+            connection_list.remove(conn)
+            print (len(connection_list))
+            break
+        try:
+            for mconn in connection_list:
+                mconn.sendall(data)
+        except socket.error:
+            print(str(adr[0]) + ":" + str(adr[1]) + " has disconnected" )
+            connection_list.remove(conn)
+            print (len(connection_list))
     conn.close()
 
 HOST = '127.0.0.1'
@@ -29,13 +39,30 @@ print ("Server is running ...")
 while True:
     conn, adr = s.accept()
     print(str(adr[0]) + ":" + str(adr[1]) + " has arrived" )
-    conn_thread = threading.Thread(target = handler, args = (conn, adr))
-    conn_thread.daemon = True
-    conn_thread.start()
     connection_list.append(conn)
+    print (len(connection_list))
 
+    if len(connection_list) < 2:
+        message = "WaitPlayer-"
+        conn.sendall(message.encode())
+    elif len(connection_list) == 2:
+        try:
+            for ind, mconn in enumerate(connection_list):
+                message = "StartGame-"+str(ind)
+                mconn.sendall(message.encode())
+                conn_thread = threading.Thread(target = handler, args = (mconn, adr))
+                conn_thread.daemon = True
+                conn_thread.start()
+        except socket.error:
+            print("Error")
+            connection_list = []
+    elif len(connection_list) > 2:
+        message = "ServerFull-"
+        conn.sendall(message.encode())
+        connection_list.remove(conn)
+        conn.close()
+        
 s.close()
-
 
 
 

@@ -1,12 +1,13 @@
 import pygame
 import math
 from font import *
-
+from network import *
 
 class GameUI():
     def __init__ (self, mainWindow, H, W, board):
         self.mainWindow = mainWindow
         self.board = board
+        self.network = Network(self)
         self.backgroundPicture = pygame.image.load("../ressources/background.png").convert()
         self.DEFAULT_COLOR = (224, 180, 20)
         self.HOVER_COLOR = (247, 224, 140)
@@ -25,7 +26,7 @@ class GameUI():
         self.SQUARE_HEIGHT = int(self.BOARD_HEIGHT/self.BOARD_ROWS)
         self.pvpButton = Font(mainWindow, self.WIN_WIDTH/2, 50+self.WIN_HEIGHT/2, "Player vs Player", self.DEFAULT_COLOR, self.font, 45)
         self.pveButton = Font(mainWindow, self.WIN_WIDTH/2, 150+self.WIN_HEIGHT/2, "Player vs AI", self.DEFAULT_COLOR, self.font, 45)
-        self.playagain = Font(mainWindow, self.WIN_WIDTH/2, self.WIN_HEIGHT/2 +100, "Play again", self.DEFAULT_COLOR, self.font, 40)
+        self.backbutton = Font(self.mainWindow, self.WIN_WIDTH/2, self.WIN_HEIGHT/2 +100, "Back to Menu", self.DEFAULT_COLOR, self.font, 40)
 
     def displayGame(self):
         boardPicture = pygame.image.load("../ressources/Connect4Board.png").convert_alpha()
@@ -50,7 +51,7 @@ class GameUI():
         self.mainWindow.blit(self.backgroundPicture, (0,0))
         winner = Font(self.mainWindow, self.WIN_WIDTH/2, self.WIN_HEIGHT/2-150, "Player " + str(player) + " won the game !", self.DEFAULT_COLOR, self.font, 60)
         winner.draw()
-        self.playagain.draw()
+        self.backbutton.draw()
 
     def displayMenu(self):
         self.mainWindow.blit(self.backgroundPicture, (0,0))
@@ -60,30 +61,76 @@ class GameUI():
         self.pveButton.draw()
 
     def hoverMenu(self, mousePos):
-        if not self.board.gamelaunched:
+        if not self.board.gamelaunched and not self.network.error and not self.network.waitplayer:
             self.pvpButton.hover(mousePos, self.HOVER_COLOR)
             self.pveButton.hover(mousePos, self.HOVER_COLOR)
-        if self.board.gameover:
-            self.playagain.hover(mousePos, self.HOVER_COLOR)
+        elif self.board.gameover:
+            self.backbutton.hover(mousePos, self.HOVER_COLOR)
+        elif self.network.error:
+            self.backbutton.hover(mousePos, self.HOVER_COLOR)
     
-    def clickEventManagement(self, mousePos):
-        if self.board.gameover and self.playagain.isOver(mousePos):
+        def clickEventManagement(self, mousePos):
+        if self.board.gameover and self.backbutton.isOver(mousePos):
             self.board.playAgain()
             self.displayMenu()
 
-        if not self.board.gamelaunched and self.pvpButton.isOver(mousePos):
-            self.board.startGame()
-            self.displayGame()
+        if not self.board.gamelaunched and self.pvpButton.isOver(mousePos) and not self.network.error and not self.network.waitplayer:
             self.board.AIgame = False
-
-        elif not self.board.gamelaunched and self.pveButton.isOver(mousePos):
+            self.network = Network(self)
+            if self.network.connect():
+                self.network.listen()
+    
+        elif not self.board.gamelaunched and self.pveButton.isOver(mousePos) and not self.network.error and not self.network.waitplayer:
             self.board.startGame()
             self.displayGame()
             self.board.AIgame = True
 
+        elif not self.board.gamelaunched and self.network.error and self.backbutton.isOver(mousePos):
+            self.network.error = False
+            self.displayMenu()
+
         elif self.board.gamelaunched:
-            self.displayCoin(mousePos)
-            if self.board.check_win2():
+            if self.board.AIgame:
+		self.displayCoin(mousePos)
+                if self.board.check_win2():
+                    self.board.gameOver()
+                    self.displayWinner(int(self.board.check_win()))
+            else:
+                if (self.board.turn % 2 == self.board.player):
+                    self.playCoin_ToNetwork(mousePos)
+
+############################## NETWORKING PART
+
+    def displayErrorMessage(self, msg):
+        errormsg = Font(self.mainWindow, self.WIN_WIDTH/2, self.WIN_HEIGHT/2-150, msg, self.DEFAULT_COLOR, self.font, 50)
+        self.mainWindow.blit(self.backgroundPicture, (0,0))
+        errormsg.draw()
+        self.backbutton.draw()
+
+    def displayWaitPlayer(self):
+        self.mainWindow.blit(self.backgroundPicture, (0,0))
+        waitplayer = Font(self.mainWindow, self.WIN_WIDTH/2, self.WIN_HEIGHT/2-150, "Waiting for players ...", self.DEFAULT_COLOR, self.font, 50)
+        waitplayer.draw()
+
+    def startGame_FromNetwork(self, player):
+        self.board.player = player
+        self.board.startGame()
+        self.displayGame()
+
+    def playCoin_ToNetwork(self, mousePos):
+        (row, col, player) = self.board.computeCoinDatas(mousePos, self.WIDTH_GAP, self.SQUARE_WIDTH)
+        message = "playcoin-" + str(row) + "-" + str(col) + "-" + str(player)
+        self.network.send(message)
+
+    def playCoin_FromNetwork(self, row, col, player):
+        self.board.add_token(int(row), int(col), int(player))
+        if self.board.check_win2():
                 self.board.gameOver()
                 self.displayWinner(int(self.board.check_win()))
+                self.network.disconnect()
+        else:
+            if (int(player) == 1):
+                self.mainWindow.blit(self.redcoin, (self.WIDTH_GAP+int(col)*self.SQUARE_WIDTH+(self.SQUARE_WIDTH-72)/2, self.WIN_HEIGHT-(int(row)+1)*self.SQUARE_HEIGHT+(self.SQUARE_HEIGHT-72)/2))
+            else:
+                self.mainWindow.blit(self.bluecoin, (self.WIDTH_GAP+int(col)*self.SQUARE_WIDTH+(self.SQUARE_WIDTH-72)/2, self.WIN_HEIGHT-(int(row)+1)*self.SQUARE_HEIGHT+(self.SQUARE_HEIGHT-72)/2))
 
