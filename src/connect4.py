@@ -94,6 +94,7 @@ class Board():
     def playAgain(self):
         self.gamelaunched = False
         self.gameover = False
+        self.AIgame = False
 
 
 

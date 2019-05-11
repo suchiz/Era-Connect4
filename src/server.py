@@ -5,6 +5,14 @@ import re
 
 connection_list = []
 
+def waiting_handler(conn, adr):
+    data = conn.recv(2048)
+    if not data: 
+        print(str(adr[0]) + ":" + str(adr[1]) + " has disconnected" )
+        connection_list.remove(conn)
+        print (len(connection_list))
+        conn.close()
+
 def handler(conn, adr):
     while True:
         data = conn.recv(2048)
@@ -45,6 +53,9 @@ while True:
     if len(connection_list) < 2:
         message = "WaitPlayer-"
         conn.sendall(message.encode())
+        welcome_thread = threading.Thread(target = waiting_handler, args = (conn, adr))
+        welcome_thread.daemon = True
+        welcome_thread.start()
     elif len(connection_list) == 2:
         try:
             for ind, mconn in enumerate(connection_list):

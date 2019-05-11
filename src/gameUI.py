@@ -90,13 +90,11 @@ class GameUI():
             self.displayMenu()
 
         elif self.board.gamelaunched:
-            if self.board.AIgame:
+            if self.board.turn % 2 == 1 and self.board.AIgame:
                 self.displayCoin(mousePos)
                 if self.board.check_win2():
-                    print("Oui")
                     self.board.gameOver()
                     self.displayWinner(int(self.board.check_win()))
-                print("No")
             else:
                 if (self.board.turn % 2 == self.board.player):
                     self.playCoin_ToNetwork(mousePos)
