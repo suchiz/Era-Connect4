@@ -85,7 +85,7 @@ class Board():
 
     def startGame(self):
         self.board = np.zeros((6, 7))
-        if self.board.AIgame:
+        if self.AIgame:
             self.turn = random.randint(0, 1)
         else: 
             self.turn = 0

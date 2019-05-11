@@ -91,10 +91,12 @@ class GameUI():
 
         elif self.board.gamelaunched:
             if self.board.AIgame:
-		self.displayCoin(mousePos)
+                self.displayCoin(mousePos)
                 if self.board.check_win2():
+                    print("Oui")
                     self.board.gameOver()
                     self.displayWinner(int(self.board.check_win()))
+                print("No")
             else:
                 if (self.board.turn % 2 == self.board.player):
                     self.playCoin_ToNetwork(mousePos)
@@ -120,10 +122,13 @@ class GameUI():
     def playCoin_ToNetwork(self, mousePos):
         (row, col, player) = self.board.computeCoinDatas(mousePos, self.WIDTH_GAP, self.SQUARE_WIDTH)
         message = "playcoin-" + str(row) + "-" + str(col) + "-" + str(player)
-        self.network.send(message)
+        try:
+            self.network.send(message)
+        except socket.error:
+            self.network.disconnect()
 
     def playCoin_FromNetwork(self, row, col, player):
-        self.board.add_token(int(row), int(col), int(player))
+        self.board.add_token_FromNetWork(int(row), int(col), int(player))
         if self.board.check_win2():
                 self.board.gameOver()
                 self.displayWinner(int(self.board.check_win()))

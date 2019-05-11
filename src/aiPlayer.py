@@ -7,16 +7,12 @@ EMPTY = 0
 
 
 def ai_move(board, gameUI):
-    pygame.display.flip()
 #    col = random.randint(0, board.COLS - 1)
 #    col = choose_move(board, 2)
-    col, minimax_score = minimax(board, 4, -math.inf, math.inf, True)
-    pygame.time.wait(500)
+    col, minimax_score = minimax(board, 1, -math.inf, math.inf, True)
     gameUI.displayCoin2(col)
     if board.check_win2():
         board.gameOver()
-        pygame.display.flip()
-        pygame.time.wait(1500)
         gameUI.displayWinner(int(board.check_win()))
 
 
