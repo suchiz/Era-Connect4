@@ -23,14 +23,18 @@ class Board():
                 validMoves.append(col)
         return validMoves
 
+    def get_row_from_column(self, col):
+        for row in range(self.ROWS):
+            if self.board[row, col] == 0:
+                break
+        return row
+
     def add_token2(self, col):
         if self.turn % 2 == 1:
             player = 1
         else:
             player = 2
-        for row in range(self.ROWS):
-            if self.board[row, col] == 0:
-                break
+        row = self.get_row_from_column(col)
         if self.isValid(col):
             self.board[row, col] = player
             self.turn = self.turn + 1

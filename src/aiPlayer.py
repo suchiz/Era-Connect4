@@ -9,7 +9,8 @@ EMPTY = 0
 def ai_move(board, gameUI):
     pygame.display.flip()
 #    col = random.randint(0, board.COLS - 1)
-    col = choose_move(board, 2)
+#    col = choose_move(board, 2)
+    col, minimax_score = minimax(board, 4, -math.inf, math.inf, True)
     pygame.time.wait(500)
     gameUI.displayCoin2(col)
     if board.check_win2():
@@ -86,3 +87,52 @@ def choose_move(board, token):
             best_heuristic = h
             best_col = col
     return best_col
+
+
+def check_terminal_node(board):
+    return board.check_win2() or len(board.getValidMoves()) == 0
+
+
+def minimax(board, depth, alpha, beta, maximizingPlayer):
+    valid_moves = board.getValidMoves()
+    terminal = check_terminal_node(board)
+    if depth == 0 or terminal:
+        if terminal:
+            if board.check_win() == AI:
+                return (None, 100000000000000)
+            elif board.check_win() == HUMAN:
+                return (None, -10000000000000)
+            else:  # Game over
+                return (None, 0)
+        else:  # Depth is zero
+            return (None, heuristic(board, AI))
+
+    if maximizingPlayer:
+        value = -math.inf
+        column = random.choice(valid_moves)
+        for col in valid_moves:
+            temp_board = copy.deepcopy(board)
+            temp_board.add_token2(col)
+            new_heur = minimax(temp_board, depth - 1, alpha, beta, False)[1]
+            if new_heur > value:
+                value = new_heur
+                column = col
+            alpha = max(alpha, value)
+            if alpha >= beta:
+                break
+        return column, value
+
+    else:  # Minimizing player
+        value = math.inf
+        column = random.choice(valid_moves)
+        for col in valid_moves:
+            temp_board = copy.deepcopy(board)
+            temp_board.add_token2(col)
+            new_heur = minimax(temp_board, depth - 1, alpha, beta, True)[1]
+            if new_heur < value:
+                value = new_heur
+                column = col
+            beta = min(beta, value)
+            if alpha >= beta:
+                break
+        return column, value
