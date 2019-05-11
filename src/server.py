@@ -1,16 +1,20 @@
 import socket
 import sys
-from _thread import *
+import threading
 import re
 
-socket_list = []
+connection_list = []
 
-def clientThread(conn):
+def handler(conn, adr):
     while True:
         data = conn.recv(2048)
-        if not data: break
+        if not data: 
+            print(str(adr[0]) + ":" + str(adr[1]) + " has disconnected" )
+            connection_list.remove(conn)
+            conn.close()
+            break
         print("Received in server: ", data.decode())
-        for mconn in socket_list:
+        for mconn in connection_list:
             mconn.sendall(data)
     conn.close()
 
@@ -24,10 +28,11 @@ print ("Server is running ...")
 
 while True:
     conn, adr = s.accept()
-    socket_list.append(conn)
-    print(socket_list)
-    print("Someone has arrived: ")
-    start_new_thread(clientThread, (conn,))
+    print(str(adr[0]) + ":" + str(adr[1]) + " has arrived" )
+    conn_thread = threading.Thread(target = handler, args = (conn, adr))
+    conn_thread.daemon = True
+    conn_thread.start()
+    connection_list.append(conn)
 
 s.close()
 

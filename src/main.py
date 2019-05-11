@@ -1,6 +1,7 @@
 import pygame
 from gameUI import *
 from connect4 import *
+from network import *
 
 #Constants
 WIN_WIDTH = 800
@@ -14,10 +15,15 @@ exitWindow = False
 oldTicks = 0
 delayInterval = 50
 
-board = Board()
-gameUI = GameUI(mainWindow, WIN_HEIGHT, WIN_WIDTH, board)
 
+board = Board()
+network = Network()
+gameUI = GameUI(mainWindow, WIN_HEIGHT, WIN_WIDTH, board, network)
+
+network.connect()
+network.setGameUi(gameUI)   
 gameUI.displayMenu()
+network.listen()
 
 
 while not exitWindow:

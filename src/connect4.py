@@ -26,10 +26,14 @@ class Board():
         for row in range(self.ROWS):
             if self.board[row, col] == 0:
                 break
-        if self.isValid(row, col):
-            self.board[row, col] = player      
-            self.turn = self.turn + 1
+                
         return(row, col, player)
+
+    def add_token2(self, row, col, player):
+        if self.isValid(int(row), int(col)):
+            self.board[int(row), int(col)] = int(player) 
+            self.turn = self.turn + 1
+
         
 
     def check_win(self):
