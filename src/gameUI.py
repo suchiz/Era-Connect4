@@ -69,7 +69,7 @@ class GameUI():
         elif self.network.error:
             self.backbutton.hover(mousePos, self.HOVER_COLOR)
     
-        def clickEventManagement(self, mousePos):
+    def clickEventManagement(self, mousePos):
         if self.board.gameover and self.backbutton.isOver(mousePos):
             self.board.playAgain()
             self.displayMenu()
