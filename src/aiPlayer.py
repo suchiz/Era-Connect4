@@ -10,7 +10,7 @@ def ai_move(board, gameUI):
     pygame.display.flip()
 #    col = random.randint(0, board.COLS - 1)
 #    col = choose_move(board, 2)
-    col, minimax_score = minimax(board, 5, -math.inf, math.inf, True)
+    col, minimax_score = minimax(board, 4, -math.inf, math.inf, True)
     pygame.time.wait(500)
     gameUI.displayCoin2(col)
     if board.check_win2():
@@ -28,12 +28,12 @@ def sum_chunk(chunk, token):
     if chunk.count(token) == 4:
         h += 100
     elif chunk.count(token) == 3 and chunk.count(EMPTY) == 1:
-        h += 10
-    elif chunk.count(token) == 2 and chunk.count(EMPTY) == 2:
         h += 5
+    elif chunk.count(token) == 2 and chunk.count(EMPTY) == 2:
+        h += 2
 
     if chunk.count(opp_token) == 3 and chunk.count(EMPTY) == 1:
-        h -= 90
+        h -= 4
 
     return h
 
@@ -44,7 +44,7 @@ def heuristic(board, token):
     # Center heuristic (better moves at the center)
     center_col = [i for i in list(board.board[:, board.COLS//2])]
     center_count = center_col.count(token)
-    h += center_count * 6
+    h += center_count * 3
 
     # Horizontal heuristic
     for row in range(board.ROWS):
