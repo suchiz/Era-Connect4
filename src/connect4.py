@@ -1,6 +1,7 @@
 import numpy as np
-import sys
+import math
 from gameUI import *
+import random
 
 class Board():
     def __init__ (self):
@@ -10,31 +11,31 @@ class Board():
         self.turn = 1
         self.gamelaunched = False
         self.gameover = False
+        self.AIgame = False
 
     def isValid(self, r, c):
         if (r >= 0 and r < self.ROWS and c >= 0 and c < self.COLS and self.board[r, c] == 0):
             return True
         return False
 
-    def add_token(self, mousePos, WIDTH_GAP, SQUARE_WIDTH):
-        posx = mousePos[0]
-        col = math.floor((posx-WIDTH_GAP)/SQUARE_WIDTH)
-        if self.turn%2 == 1:
+    def add_token2(self, col):
+        if self.turn % 2 == 1:
             player = 1
         else:
             player = 2
         for row in range(self.ROWS):
             if self.board[row, col] == 0:
                 break
-                
-        return(row, col, player)
-
-    def add_token2(self, row, col, player):
-        if self.isValid(int(row), int(col)):
-            self.board[int(row), int(col)] = int(player) 
+        if self.isValid(row, col):
+            self.board[row, col] = player
             self.turn = self.turn + 1
+        return (row, col, player)
 
-        
+    def add_token(self, mousePos, WIDTH_GAP, SQUARE_WIDTH):
+        posx = mousePos[0]
+        col = math.floor((posx-WIDTH_GAP)/SQUARE_WIDTH)
+        return self.add_token2(col)
+
 
     def check_win(self):
         # check horizontal line
@@ -72,7 +73,7 @@ class Board():
 
     def startGame(self):
         self.board = np.zeros((6, 7))
-        self.turn = 1
+        self.turn = random.randint(0, 1)
         self.gamelaunched = True
     
     def playAgain(self):
