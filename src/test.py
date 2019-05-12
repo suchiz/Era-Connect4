@@ -170,6 +170,18 @@ class Test(unittest.TestCase):
         self.assertFalse(board.check_win2())
 
 
+    def test_check_draw(self):
+        board = Board()
+        
+        self.assertEqual(0,board.check_draw())
+        board.add_token2(2)
+
+        self.assertEqual(0,board.check_draw())
+
+        board.board =  np.ones((board.ROWS, board.COLS))
+        self.assertEqual(1,board.check_draw())
+
+
         #add 4 same colour token in row to check win2
         board.add_token2(2)
         board.turn=1
