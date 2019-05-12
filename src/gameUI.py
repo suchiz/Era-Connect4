@@ -163,6 +163,7 @@ class GameUI():
                     self.board.gameOver()
                     self.displayWinner(int(self.board.check_win()))
                     self.network.disconnect()
+                    
             else:
                 if (int(player) == 1):
                     self.mainWindow.blit(self.redcoin, (self.WIDTH_GAP+int(col)*self.SQUARE_WIDTH+(self.SQUARE_WIDTH-72)/2, self.WIN_HEIGHT-(int(row)+1)*self.SQUARE_HEIGHT+(self.SQUARE_HEIGHT-72)/2))

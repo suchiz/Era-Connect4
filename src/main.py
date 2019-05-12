@@ -31,7 +31,8 @@ while not exitWindow:
     for event in pygame.event.get():
         mousePos = pygame.mouse.get_pos()
         if event.type == pygame.QUIT:
-            gameUI.network.disconnect()
+            if not gameUI.network is None:
+                gameUI.network.disconnect()
             exitWindow = True
         if event.type == pygame.MOUSEMOTION:
             gameUI.hoverMenu(mousePos)
