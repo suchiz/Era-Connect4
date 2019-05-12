@@ -37,7 +37,7 @@ class Board():
         else:
             player = 2
         row = self.get_row_from_column(col)
-        if self.isValid(col):
+        if self.isValid(col) and self.isValid2(row,col):
             self.board[row][col] = player
             self.turn += 1
         else:
