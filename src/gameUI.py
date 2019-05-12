@@ -57,6 +57,12 @@ class GameUI():
         winner.draw()
         self.backButton.draw()
 
+    def displayDraw(self):
+        self.mainWindow.blit(self.backgroundPicture, (0,0))
+        drawFont = Font(self.mainWindow, self.WIN_WIDTH/2, self.WIN_HEIGHT/2-150, "As stupid as your opponent", self.DEFAULT_COLOR, self.font, 60)
+        drawFont.draw()
+        self.backButton.draw()
+
     def displayMenu(self):
         self.mainWindow.blit(self.backgroundPicture, (0,0))
         title = Font(self.mainWindow, self.WIN_WIDTH/2, self.WIN_HEIGHT/2-150, "Era-Connect4", self.DEFAULT_COLOR, self.font, 80)
@@ -124,9 +130,13 @@ class GameUI():
                 if self.board.check_win2():
                     self.board.gameOver()
                     self.displayWinner(int(self.board.check_win()))
+                elif self.board.check_draw():
+                    self.board.gameOver()
+                    self.displayDraw()
             else:
                 if (self.board.turn % 2 == self.board.player):
                     self.playCoin_ToNetwork(mousePos)
+
 
 ############################## NETWORKING PART
 
@@ -163,8 +173,13 @@ class GameUI():
                     self.board.gameOver()
                     self.displayWinner(int(self.board.check_win()))
                     self.network.disconnect()
+            elif self.board.check_draw():
+                    self.board.gameOver()
+                    self.displayDraw()
+                    self.network.disconnect()
                     
             else:
+                
                 if (int(player) == 1):
                     self.mainWindow.blit(self.redcoin, (self.WIDTH_GAP+int(col)*self.SQUARE_WIDTH+(self.SQUARE_WIDTH-72)/2, self.WIN_HEIGHT-(int(row)+1)*self.SQUARE_HEIGHT+(self.SQUARE_HEIGHT-72)/2))
                 else:

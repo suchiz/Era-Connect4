@@ -25,6 +25,9 @@ def ai_move(board, gameUI):
         pygame.display.flip()
         pygame.time.wait(500)
         gameUI.displayWinner(int(board.check_win()))
+    elif board.check_draw():
+        board.gameOver()
+        gameUI.displayDraw()
 
 
 def sum_chunk(chunk, token):
