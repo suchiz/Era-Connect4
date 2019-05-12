@@ -5,13 +5,17 @@ AI = 2
 HUMAN = 1
 EMPTY = 0
 
+EASY = 0
+NORMAL = 1
+DIFFICULT = 2
+
 
 def ai_move(board, gameUI):
     pygame.display.flip()
     pygame.time.wait(500)
-    if board.difficulty == 0:
+    if board.difficulty == EASY:
         col = random.randint(0, board.COLS - 1)
-    elif board.difficulty == 1:
+    elif board.difficulty == NORMAL:
         col = choose_move(board, 2)
     else:
         col, minimax_score = minimax(board, 1, -math.inf, math.inf, True)

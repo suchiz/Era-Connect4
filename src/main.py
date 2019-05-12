@@ -11,10 +11,6 @@ WIN_HEIGHT = 600
 HUMAN = 1
 AI = 0
 
-EASY = 0
-NORMAL = 1
-DIFFICULT = 2
-
 #Init window
 pygame.init()
 pygame.display.set_caption('Era Crew - Connect 4')
