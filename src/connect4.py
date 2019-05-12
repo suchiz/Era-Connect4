@@ -106,6 +106,8 @@ class Board():
     def computeCoinDatas(self, mousePos, WIDTH_GAP, SQUARE_WIDTH):
         posx = mousePos[0]
         col = math.floor((posx-WIDTH_GAP)/SQUARE_WIDTH)
+        if col > self.COLS-1 or col < 0:
+            return (0,0,0)
         if self.turn % 2 == 1:
             player = 1
         else:

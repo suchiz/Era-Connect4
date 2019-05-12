@@ -36,7 +36,7 @@ def handler(conn, adr):
             print (len(connection_list))
     conn.close()
 
-HOST = '127.0.0.1'
+HOST = '78.131.35.35'
 PORT = 7777
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

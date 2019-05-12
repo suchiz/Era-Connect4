@@ -148,6 +148,8 @@ class GameUI():
 
     def playCoin_ToNetwork(self, mousePos):
         (row, col, player) = self.board.computeCoinDatas(mousePos, self.WIDTH_GAP, self.SQUARE_WIDTH)
+        if player == 0:
+            return
         message = "playcoin-" + str(row) + "-" + str(col) + "-" + str(player)
         try:
             self.network.send(message)

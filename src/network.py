@@ -4,7 +4,7 @@ import threading
 
 class Network():
     def __init__ (self, gameUI):
-        self.HOST = '127.0.0.1'
+        self.HOST = '78.131.35.35'
         self.PORT = 7777
         self.s = None
         self.gameUI = gameUI
