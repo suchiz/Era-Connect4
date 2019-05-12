@@ -125,8 +125,11 @@ class GameUI():
                     self.board.gameOver()
                     self.displayWinner(int(self.board.check_win()))
             else:
-                if (self.board.turn % 2 == self.board.player):
-                    self.playCoin_ToNetwork(mousePos)
+                if (self.board.check_draw() == 0):
+                    if (self.board.turn % 2 == self.board.player):
+                        self.playCoin_ToNetwork(mousePos)
+                else :
+                    print ("IMHEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEERE")
 
 ############################## NETWORKING PART
 
@@ -165,6 +168,7 @@ class GameUI():
                     self.network.disconnect()
                     
             else:
+                
                 if (int(player) == 1):
                     self.mainWindow.blit(self.redcoin, (self.WIDTH_GAP+int(col)*self.SQUARE_WIDTH+(self.SQUARE_WIDTH-72)/2, self.WIN_HEIGHT-(int(row)+1)*self.SQUARE_HEIGHT+(self.SQUARE_HEIGHT-72)/2))
                 else:

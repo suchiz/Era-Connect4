@@ -76,7 +76,18 @@ class Board():
                 if self.board[r][c] != 0 and self.board[r + 1][c + 1] == self.board[r][c] and self.board[r + 2][c + 2] == self.board[r][c] and \
                         self.board[r + 3][c + 3] == self.board[r][c]:
                     return self.board[r][c]
+
         return 0
+
+    def check_draw(self):
+        draw = 1
+        for c in range(self.COLS):
+            for r in range(self.ROWS):
+                if (self.board[r][c]==0):
+                    draw = 0
+
+        return draw
+
 
     def check_win2(self):
         if (self.check_win() != 0):
@@ -126,3 +137,4 @@ class Board():
         if self.isValid2(row, col):
             self.board[row, col] = player
             self.turn = self.turn + 1
+
