@@ -7,7 +7,8 @@ EMPTY = 0
 
 
 def ai_move(board, gameUI):
-
+    pygame.display.flip()
+    pygame.time.wait(500)
     if board.difficulty == 0:
         col = random.randint(0, board.COLS - 1)
     elif board.difficulty == 1:
@@ -17,6 +18,8 @@ def ai_move(board, gameUI):
     gameUI.displayCoin2(col)
     if board.check_win2():
         board.gameOver()
+        pygame.display.flip()
+        pygame.time.wait(500)
         gameUI.displayWinner(int(board.check_win()))
 
 
