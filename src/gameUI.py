@@ -92,13 +92,13 @@ class GameUI():
             self.board.playAgain()
             self.displayMenu()
 
-        if not self.board.gamelaunched and self.pvpButton.isOver(mousePos) and not self.network.error and not self.network.waitplayer:
+        if not self.board.gamelaunched and not self.board.AIgame and self.pvpButton.isOver(mousePos) and not self.network.error and not self.network.waitplayer:
             self.board.AIgame = False
             self.network = Network(self)
             if self.network.connect():
                 self.network.listen()
     
-        elif not self.board.gamelaunched and self.pveButton.isOver(mousePos) and not self.network.error and not self.network.waitplayer:
+        elif not self.board.gamelaunched and not self.board.AIgame and self.pveButton.isOver(mousePos) and not self.network.error and not self.network.waitplayer:
             self.board.AIgame = True
             self.displayDifficulty()
 

@@ -99,6 +99,7 @@ class Board():
 
 
 
+
     ##### NETWORKING
     def computeCoinDatas(self, mousePos, WIDTH_GAP, SQUARE_WIDTH):
         posx = mousePos[0]

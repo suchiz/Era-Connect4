@@ -18,7 +18,7 @@ def ai_move(board, gameUI):
     elif board.difficulty == NORMAL:
         col = choose_move(board, 2)
     else:
-        col, minimax_score = minimax(board, 1, -math.inf, math.inf, True)
+        col, minimax_score = minimax(board, 5, -math.inf, math.inf, True)
     gameUI.displayCoin2(col)
     if board.check_win2():
         board.gameOver()

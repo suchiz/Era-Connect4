@@ -38,7 +38,7 @@ while not exitWindow:
         if event.type == pygame.MOUSEBUTTONDOWN:
             gameUI.clickEventManagement(mousePos)
 
-    if board.turn % 2 == AI and board.AIgame and not board.gameover:
+    if not board.gameover and board.turn % 2 == AI and board.AIgame and board.gamelaunched:
         ai_move(board, gameUI)
                     
     if currentTicks - oldTicks < delayInterval:
