@@ -62,8 +62,11 @@ class Network():
         self.s.sendall(data.encode())
 
     def disconnect(self):
-        self.stop_thread = True
-        self.s.close()
+        try:
+            self.stop_thread = True
+            self.s.close()
+        except AttributeError:
+            print("No need to close")
 
     def setGameUI(self, gameUI):
         self.gameUI = gameUI

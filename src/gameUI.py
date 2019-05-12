@@ -158,13 +158,12 @@ class GameUI():
 
     def playCoin_ToNetwork(self, mousePos):
         (row, col, player) = self.board.computeCoinDatas(mousePos, self.WIDTH_GAP, self.SQUARE_WIDTH)
-        if player == 0:
-            return
-        message = "playcoin-" + str(row) + "-" + str(col) + "-" + str(player)
-        try:
-            self.network.send(message)
-        except socket.error:
-            self.network.disconnect()
+        if (self.board.isValid2(int(row), int(col))):
+            message = "playcoin-" + str(row) + "-" + str(col) + "-" + str(player)
+            try:
+                self.network.send(message)
+            except socket.error:
+                self.network.disconnect()
 
     def playCoin_FromNetwork(self, row, col, player):
         if (self.board.isValid2(int(row), int(col))):
@@ -177,9 +176,7 @@ class GameUI():
                     self.board.gameOver()
                     self.displayDraw()
                     self.network.disconnect()
-                    
             else:
-                
                 if (int(player) == 1):
                     self.mainWindow.blit(self.redcoin, (self.WIDTH_GAP+int(col)*self.SQUARE_WIDTH+(self.SQUARE_WIDTH-72)/2, self.WIN_HEIGHT-(int(row)+1)*self.SQUARE_HEIGHT+(self.SQUARE_HEIGHT-72)/2))
                 else:

@@ -1,13 +1,10 @@
 import unittest
 from connect4 import *
 
-
-
 class Test(unittest.TestCase):
 
 
     def test_addToken2(self):
-
         board = Board()
         add1= board.add_token2(1)
         add2= board.add_token2(1)
@@ -19,7 +16,6 @@ class Test(unittest.TestCase):
         self.assertEqual(add3,(0,2,1))
    
     def test_isValid(self):
-
         board = Board()
         self.assertTrue(board.isValid(0))
         self.assertTrue(board.isValid(1))
