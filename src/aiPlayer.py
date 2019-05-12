@@ -7,9 +7,13 @@ EMPTY = 0
 
 
 def ai_move(board, gameUI):
-#    col = random.randint(0, board.COLS - 1)
-#    col = choose_move(board, 2)
-    col, minimax_score = minimax(board, 1, -math.inf, math.inf, True)
+
+    if board.difficulty == 0:
+        col = random.randint(0, board.COLS - 1)
+    elif board.difficulty == 1:
+        col = choose_move(board, 2)
+    else:
+        col, minimax_score = minimax(board, 1, -math.inf, math.inf, True)
     gameUI.displayCoin2(col)
     if board.check_win2():
         board.gameOver()

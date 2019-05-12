@@ -13,6 +13,7 @@ class Board():
         self.gameover = False
         self.player = None
         self.AIgame = False
+        self.difficulty = 0
 
     def isValid(self, c):
         return self.board[self.ROWS-1][c] == 0
@@ -26,7 +27,7 @@ class Board():
 
     def get_row_from_column(self, col):
         for row in range(self.ROWS):
-            if self.board[row, col] == 0:
+            if self.board[row][col] == 0:
                 break
         return row
 
@@ -37,8 +38,8 @@ class Board():
             player = 2
         row = self.get_row_from_column(col)
         if self.isValid(col):
-            self.board[row, col] = player
-            self.turn = self.turn + 1
+            self.board[row][col] = player
+            self.turn += 1
         else:
             player = 0
         return (row, col, player)

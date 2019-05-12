@@ -11,6 +11,10 @@ WIN_HEIGHT = 600
 HUMAN = 1
 AI = 0
 
+EASY = 0
+NORMAL = 1
+DIFFICULT = 2
+
 #Init window
 pygame.init()
 pygame.display.set_caption('Era Crew - Connect 4')
@@ -37,7 +41,6 @@ while not exitWindow:
             gameUI.hoverMenu(mousePos)
         if event.type == pygame.MOUSEBUTTONDOWN:
             gameUI.clickEventManagement(mousePos)
-                
 
     if board.turn % 2 == AI and board.AIgame and not board.gameover:
         ai_move(board, gameUI)

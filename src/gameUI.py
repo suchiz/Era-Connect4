@@ -103,12 +103,15 @@ class GameUI():
             self.displayDifficulty()
 
         elif not self.board.gamelaunched and self.board.AIgame and self.mediumButton.isOver(mousePos):
+            self.board.difficulty = 0
             self.board.startGame()
             self.displayGame()
         elif not self.board.gamelaunched and self.board.AIgame and self.difficultButton.isOver(mousePos):
+            self.board.difficulty = 1
             self.board.startGame()
             self.displayGame()
         elif not self.board.gamelaunched and self.board.AIgame and self.impossibleButton.isOver(mousePos):
+            self.board.difficulty = 2
             self.board.startGame()
             self.displayGame()
         elif not self.board.gamelaunched and self.network.error and self.backButton.isOver(mousePos):
