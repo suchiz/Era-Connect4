@@ -16,7 +16,7 @@ def ai_move(board, gameUI):
     if board.difficulty == EASY:
         col = random.randint(0, board.COLS - 1)
     elif board.difficulty == NORMAL:
-        col = choose_move(board, 2)
+        col = choose_move(board, AI)
     else:
         col, minimax_score = minimax(board, 5, -math.inf, math.inf, True)
     gameUI.displayCoin2(col)
@@ -40,7 +40,7 @@ def sum_chunk(chunk, token):
         h += 2
 
     if chunk.count(opp_token) == 3 and chunk.count(EMPTY) == 1:
-        h -= 4
+        h -= 80
 
     return h
 
