@@ -32,6 +32,8 @@ class Board():
         return row
 
     def add_token2(self, col):
+        if col > self.COLS-1 or col < 0:
+            return (0,0,0)
         if self.turn % 2 == 1:
             player = 1
         else:
